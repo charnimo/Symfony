@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Add Product{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        /* Additional styling for the form */
+        .form-container {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        .form-container h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .form-control {
+            margin-bottom: 15px;
+        }
+        .btn-success {
+            display: block;
+            width: 100%;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <div class="form-container">
+        <h1>Add Product</h1>
+        {{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
+        {{ form_errors(form) }}
+        {{ form_row(form.name, {'attr': {'class': 'form-control'}}) }}
+        {{ form_row(form.price, {'attr': {'class': 'form-control'}}) }}
+        {{ form_row(form.description, {'attr': {'class': 'form-control'}}) }}
+        {{ form_row(form.image, {'attr': {'class': 'form-control'}}) }}
+        {{ form_row(form.category, {'attr': {'class': 'form-control'}}) }}
+        {{ form_row(form.quantite, {'attr': {'class': 'form-control'}}) }}
+        <button type="submit" class="btn btn-success">Add Product</button>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

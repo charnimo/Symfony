@@ -1,0 +1,152 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Admin Dashboard{% endblock %}
+
+{% block body %}
+    <style>
+        #sidebar {
+            background-color:black;
+            padding-top: 70px;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 250px;
+            overflow-y: auto;
+        }
+
+        .main {
+            margin-left: 264px;
+        }
+
+        .content {
+            padding: 20px;
+            background-color: #f0f0f0;
+        }
+
+        .sidebar-logo {
+            padding: 1.15rem 1.5rem;
+        }
+
+        .sidebar-logo a {
+            color: #e9ecef;
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .sidebar-nav {
+            padding: 0;
+        }
+
+        .sidebar-header {
+            color: #e9ecef;
+            font-size: .75rem;
+            padding: 1.5rem 1.5rem .375rem;
+        }
+
+        a.sidebar-link {
+            padding: .625rem 1.625rem;
+            color: #e9ecef;
+            position: relative;
+            display: block;
+            font-size: 1rem;
+            text-decoration:none;
+        }
+
+        .sidebar-link[data-bs-toggle="collapse"]::after {
+            border: solid;
+            border-width: 0 .075rem .075rem 0;
+            content: "";
+            display: inline-block;
+            padding: 2px;
+            position: absolute;
+            right: 1.5rem;
+            top: 1.4rem;
+            transform: rotate(-135deg);
+            transition: all .2s ease-out;
+        }
+
+        .sidebar-link[data-bs-toggle="collapse"].collapsed::after {
+            transform: rotate(45deg);
+            transition: all .2s ease-out;
+        }
+
+        .product-image {
+            max-width: 100%;
+            max-height: 200px;
+        }
+
+        .col-divider {
+            border-right: 1px solid #ccc;
+        }
+    </style>
+
+    <div class="wrapper expanded">
+        <!-- Sidebar -->
+        <aside id="sidebar">
+            <div class="h-100">
+                <!-- Sidebar Navigation -->
+                <ul class="sidebar-nav">
+                    <li class="sidebar-header">
+                        Options
+                    </li>
+                    <li class="sidebar-item">
+                        <a href="Dashboard.php" class="sidebar-link" >
+                            <i class="fa-solid fa-list pe-2"></i>
+                            Dashboard
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a href="#" class="sidebar-link collapsed" data-bs-toggle="collapse" data-bs-target="#categories"
+                           aria-expanded="false" aria-controls="categories">
+                            <i class="fa-regular fa-file-lines pe-2"></i>
+                            Categories
+                        </a>
+                        <ul id="categories" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                            <li class="sidebar-item">
+                                <a href="#" class="sidebar-link filter-category" data-category="All">ALL</a>
+                            </li>
+                            <li class="sidebar-item">
+                                <a href="#" class="sidebar-link filter-category" data-category="pc">PC</a>
+                            </li>
+                            <li class="sidebar-item">
+                                <a href="#" class="sidebar-link filter-category" data-category="console">Console</a>
+                            </li>
+                            <li class="sidebar-item">
+                                <a href="#" class="sidebar-link filter-category" data-category="tv">TV</a>
+                            </li>
+                            <li class="sidebar-item">
+                                <a href="#" class="sidebar-link filter-category" data-category="electromenager">Electroménager</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </aside>
+
+        <!-- Main content -->
+        <div class="main">
+            <h1>Admin Dashboard</h1>
+            <a href="{{ path('admin_product_new') }}" class="btn btn-success">Add Product</a>
+            <div class="row">
+                {% for product in products %}
+                    <div class="col-md-4">
+                        <div class="card mb-4 shadow-sm">
+                            <img src="{{ asset('images/' ~ product.image) }}" alt="{{ product.name }}" class="card-img-top">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ product.name }}</h5>
+                                <p class="card-text">{{ product.description }}</p>
+                                <p class="card-text"><strong>{{ product.price }} TND</strong></p>
+                                <a href="{{ path('admin_product_edit', {'id': product.id}) }}" class="btn btn-warning">Edit</a>
+                                <form method="post" action="{{ path('admin_product_delete', {'id': product.id}) }}" style="display: inline-block;">
+                                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ product.id) }}">
+                                    <button type="submit" class="btn btn-danger">Delete</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
