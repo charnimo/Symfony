@@ -1,6 +1,7 @@
 <?php
 
 /**
+ * test push
  * Returns the importmap for this application.
  *
  * - "path" is a path inside the asset mapper system. Use the
