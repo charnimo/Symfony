@@ -30,11 +30,11 @@ class DashboardController extends AbstractDashboardController
     {
         return Dashboard::new()
             ->setTitle('Dashboard');
+           
     }
 
     public function configureMenuItems(): iterable
     {
-<<<<<<< HEAD
        // yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
         yield MenuItem::section('users and porducts');
         // yield MenuItem::linkToCrud('The Label', 'fas fa-list', EntityClass::class);
@@ -42,17 +42,5 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('users', 'fa fa-user-circle-o' , Users::class)     ;  
        yield MenuItem::section('transaction info');
 
-=======
-        yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
-        
-        yield MenuItem::subMenu('Blog', 'fa fa-laptop')->setSubItems([
-            MenuItem::linkToCrud('Categories', 'fa fa-tags', Users::class),
-            MenuItem::linkToCrud('Posts', 'fa fa-file-text', Products::class),
-            MenuItem::linkToCrud('Comments', 'fa fa-comment', Users::class),
-        ]);
-        // yield MenuItem::linkToCrud('The Label', 'fas fa-list', EntityClass::class);
-        yield MenuItem::linkToCrud('products', 'fa fa-laptop' , Products::class)     ; 
-        yield MenuItem::linkToCrud('users', 'fa fa-user-circle-o' , Users::class)     ;                 
->>>>>>> b5c15f148ecf72382add7347fdb34bb3257de04a
     }
 }
