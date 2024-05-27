@@ -19,7 +19,7 @@ class DashboardController extends AbstractDashboardController
     public function index(): Response
     {
        
-//$this->denyAccessUnlessGranted('ROLE_ADMIN');
+//$this->denyAccessUnlessGranted('ROLE_ADMIN' , null , "You need Admin rights");
 //Wait until login works 
        
         $adminUrlGenerator = $this->container->get(AdminUrlGenerator::class);
