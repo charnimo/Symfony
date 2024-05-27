@@ -10,11 +10,12 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class SecurityController extends AbstractController
 {
     #[Route('/signin', name: 'app_login')]
-    public function login(AuthenticationUtils $authenticationUtils, Request $request, EntityManagerInterface $em): Response
+    public function login(AuthenticationUtils $authenticationUtils, Request $request, EntityManagerInterface $em, UserPasswordHasherInterface $passwordHasher): Response
     {
         // Create the registration form
         $user = new Users();
@@ -22,6 +23,9 @@ class SecurityController extends AbstractController
         $registerForm->handleRequest($request);
 
         if ($registerForm->isSubmitted() && $registerForm->isValid()) {
+            $encodedPassword = $passwordHasher->hashPassword($user, $user->getPassword());
+            $user->setPassword($encodedPassword);
+
             $em->persist($user);
             $em->flush();
 
@@ -40,3 +44,4 @@ class SecurityController extends AbstractController
         ]);
     }
 }
+
