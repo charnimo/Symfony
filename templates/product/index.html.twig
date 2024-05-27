@@ -169,14 +169,11 @@
                                                     <i class="fas fa-eye"></i> 
                                                 </button>
                                                 <!-- Button with a shopping cart icon -->
-                                                <form method="POST" action="../client/addtocart.php">
-                                                    <input type="hidden" name="product_name" value="{{ product.name }}">
-                                                    <input type="hidden" name="product_price" value="{{ product.price }}">
-                                                    <input type="hidden" name="product_image" value="{{ product.image }}">
-                                                    <button type="submit" name="addtocart" class="btn btn-sm btn-success">
-                                                        <i class="fas fa-shopping-cart"></i>
-                                                    </button>
-                                                </form>
+                                                <form method="POST" action="{{ path('cart_add', {id: product.id}) }}">
+                                                <button type="submit" class="btn btn-sm btn-success">
+                                                <i class="fas fa-shopping-cart"></i> Add to Cart
+                                                </button>
+                                             </form>
                                             </div>
                                             <small class="text-muted" style="font-weight: bold;">{{ product.price }} TND</small>
                                         </div>
