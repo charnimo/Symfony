@@ -11,14 +11,14 @@
 
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/client/user.php">Products</a>
+                    <a class="nav-link" href="{{ path('user_products') }}">Products</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/contact.php">Contact</a>
+                    <a class="nav-link" href="{{ path('app_contact') }}">Contact</a>
                 </li>
                 {% if not app.session.get('admin') %}
                     <li class="nav-item">
-                        <a class="nav-link" href="/client/cart.php">Cart</a>
+                        <a class="nav-link" href="{{ path('index') }}">Cart</a>
                     </li>
                 {% endif %}
 
@@ -28,7 +28,7 @@
                     </li>
                 {% else %}
                     <li class="nav-item">
-                        <a class="nav-link" href="/login.php">Login</a>
+                        <a class="nav-link" href="">Login</a>
                     </li>
                 {% endif %}
                 <div id="user-status" style="margin-left: 100px;">

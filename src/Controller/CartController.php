@@ -7,10 +7,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/cart', name: 'cart_')]
+
 class CartController extends AbstractController
 {
-    #[Route('/', name: 'index')]
+    #[Route('/cart', name: 'index')]
     public function index(SessionInterface $session, ProductsRepository $productsRepository)
     {
         $panier = $session->get('panier', []);
@@ -33,7 +33,7 @@ class CartController extends AbstractController
     }
 
 
-    #[Route('/add/{id}', name: 'add')]
+    #[Route('/cart/add/{id}', name: 'add')]
     public function add(Products $product, SessionInterface $session)
     {
         //On récupère l'id du produit
@@ -56,7 +56,7 @@ class CartController extends AbstractController
         return $this->redirectToRoute('cart_index');
     }
 
-    #[Route('/remove/{id}', name: 'remove')]
+    #[Route('/cart/remove/{id}', name: 'remove')]
     public function remove(Products $product, SessionInterface $session)
     {
         //On récupère l'id du produit
@@ -81,7 +81,7 @@ class CartController extends AbstractController
         return $this->redirectToRoute('cart_index');
     }
 
-    #[Route('/delete/{id}', name: 'delete')]
+    #[Route('/cart/delete/{id}', name: 'delete')]
     public function delete(Products $product, SessionInterface $session)
     {
         //On récupère l'id du produit
@@ -100,7 +100,7 @@ class CartController extends AbstractController
         return $this->redirectToRoute('cart_index');
     }
 
-    #[Route('/empty', name: 'empty')]
+    #[Route('/cart/empty', name: 'empty')]
     public function empty(SessionInterface $session)
     {
         $session->remove('panier');
