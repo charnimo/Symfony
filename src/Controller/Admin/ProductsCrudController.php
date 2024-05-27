@@ -7,14 +7,22 @@ use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
+
+
 
 class ProductsCrudController extends AbstractCrudController
 {
     public static function getEntityFqcn(): string
-    {
+    {   
         return Products::class;
     }
+    public function configureCrud(Crud $crud): Crud{
 
+        return $crud
+        ->setSearchFields(['category']);
+        
+    }
     /*
     public function configureFields(string $pageName): iterable
     {
@@ -25,4 +33,6 @@ class ProductsCrudController extends AbstractCrudController
         ];
     }
     */
+    
+    
 }
