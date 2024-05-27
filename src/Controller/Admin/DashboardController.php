@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 use App\Entity\Users;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Routing\Annotation\Route;
-#[IsGranted('ROLE_ADMIN')]
+
 class DashboardController extends AbstractDashboardController
 {
     #[Route('/admin/dashboard', name: 'admin.index')]
@@ -34,10 +34,12 @@ class DashboardController extends AbstractDashboardController
 
     public function configureMenuItems(): iterable
     {
-        yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
+       // yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
+        yield MenuItem::section('users and porducts');
         // yield MenuItem::linkToCrud('The Label', 'fas fa-list', EntityClass::class);
         yield MenuItem::linkToCrud('products', 'fa fa-laptop' , Products::class)     ; 
         yield MenuItem::linkToCrud('users', 'fa fa-user-circle-o' , Users::class)     ;  
+       yield MenuItem::section('transaction info');
 
     }
 }
