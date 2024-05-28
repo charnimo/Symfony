@@ -6,6 +6,9 @@
 parameters:
     images_directory: '%kernel.project_dir%/public/images'
 services:
+    App\Controller\SecurityController:
+        arguments:
+            $rememberMeService: '@security.authentication.rememberme.services.persistent'
     # default configuration for services in *this* file
     _defaults:
         autowire: true      # Automatically injects dependencies in your services.

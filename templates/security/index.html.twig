@@ -12,7 +12,9 @@
 
 <div class="container" id="container">
     <div class="form-container sign-up" id="sign-up-container">
-        {{ form_start(registerForm, {'attr': {'class': 'form'}}) }}
+
+
+        {{ form_start(registrationForm) }}
         <h1>Create Account</h1>
         <div class="social-icons">
             <a href="#" class="icon"><i class="fa-brands fa-google-plus-g"></i></a>
@@ -21,32 +23,39 @@
             <a href="#" class="icon"><i class="fa-brands fa-linkedin-in"></i></a>
         </div>
         <span>or use your email for registration</span>
-        {{ form_widget(registerForm.username, {'attr': {'placeholder': 'Username', 'class': 'form-control'}}) }}
-        {{ form_widget(registerForm.email, {'attr': {'placeholder': 'Email', 'class': 'form-control'}}) }}
-        {{ form_widget(registerForm.password, {'attr': {'placeholder': 'Password', 'class': 'form-control'}}) }}
+        {{ form_row(registrationForm.username) }}
+        {{ form_row(registrationForm.email) }}
+        {{ form_row(registrationForm.plainPassword, {
+            label: 'Password'
+        }) }}
         <button type="submit" class="btn btn-success">Sign Up</button>
-        {{ form_end(registerForm) }}
+        {{ form_end(registrationForm) }}
+    </div>
+    <div class="form-container sign-in" id="sign-in-container">
+        {{ form_start(loginForm, {'attr': {'class': 'login-form', 'method': 'POST', 'action': path('app_register')}}) }}
+        <div class="input-group">
+            <div class="input-field">
+                {{ form_widget(loginForm._username) }}
+                {{ form_label(loginForm._username) }}
+            </div>
+            <div class="input-field">
+                {{ form_widget(loginForm._password) }}
+                {{ form_label(loginForm._password) }}
+
+            </div>
+        </div>
+        <div class="remember">
+            <input name='_remember_me' type="checkbox" id="formCheck" class="check">
+            <label for="formCheck">Remember Me</label>
+        </div>
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+        <div class="input-field">
+            <input type="submit" class="input-submit" value="Sign In" required>
+        </div>
+        {{ form_end(loginForm) }}
     </div>
 
-    <div class="form-container sign-in" id="sign-in-container">
-        <form name="f2" action="{{ path('app_login') }}" method="POST">
-            <h1>Sign In</h1>
-            <div class="social-icons">
-                <a href="#" class="icon"><i class="fa-brands fa-google-plus-g"></i></a>
-                <a href="#" class="icon"><i class="fa-brands fa-facebook-f"></i></a>
-                <a href="#" class="icon"><i class="fa-brands fa-github"></i></a>
-                <a href="#" class="icon"><i class="fa-brands fa-linkedin-in"></i></a>
-            </div>
-            <span>or use your email for login</span>
-            <input type="text" name="_username" placeholder="Username" value="{{ last_username }}" required>
-            <input type="password" name="_password" placeholder="Password" required>
-            <a href="#">Forget Your Password?</a>
-            <button type="submit" class="btn btn-primary">Sign In</button>
-            {% if error %}
-                <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-            {% endif %}
-        </form>
-    </div>
+
 
     <div class="toggle-container">
         <div class="toggle">
