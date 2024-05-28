@@ -10,6 +10,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
 use Symfony\Component\HttpFoundation\Response;
 use App\Entity\Users;
+use App\Entity\Facture; // Ensure this line is present
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -19,7 +20,7 @@ class DashboardController extends AbstractDashboardController
     public function index(): Response
     {
        
-//$this->denyAccessUnlessGranted('ROLE_ADMIN');
+//$this->denyAccessUnlessGranted('ROLE_ADMIN' , null , "You need Admin rights");
 //Wait until login works 
        
         $adminUrlGenerator = $this->container->get(AdminUrlGenerator::class);
@@ -42,6 +43,7 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('products', 'fa fa-laptop' , Products::class)     ; 
         yield MenuItem::linkToCrud('users', 'fa fa-user-circle-o' , Users::class)     ;  
        yield MenuItem::section('transaction info');
+       yield MenuItem::linkToCrud('Factures', 'fas fa-file-invoice', Facture::class);
 
     }
 }
