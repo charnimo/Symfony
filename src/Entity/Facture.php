@@ -33,6 +33,9 @@ class Facture
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $SubmissionDate = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $description = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -106,6 +109,18 @@ class Facture
     public function setSubmissionDate(\DateTimeInterface $SubmissionDate): static
     {
         $this->SubmissionDate = $SubmissionDate;
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): static
+    {
+        $this->description = $description;
 
         return $this;
     }

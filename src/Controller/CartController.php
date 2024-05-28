@@ -1,6 +1,8 @@
 <?php
 namespace App\Controller;
-
+use App\Entity\Users;
+use App\Entity\Facture;
+use App\Entity\Item;
 use App\Entity\Products;
 use App\Repository\ProductsRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -90,7 +92,7 @@ class CartController extends AbstractController
     }
 
     #[Route('/checkout', name: 'cart_checkout', methods: ['POST'])]
-    public function checkout(Request $request, SessionInterface $session, ProductsRepository $productsRepository): JsonResponse
+    public function checkout(Request $request, SessionInterface $session, ProductsRepository $productsRepository,EntityManagerInterface $entityManager): JsonResponse
     {
         $panier = $session->get('panier', []);
 
@@ -99,16 +101,46 @@ class CartController extends AbstractController
         }
 
         $total = 0;
-        
-        
+        $user=$this->getUser();
+        $data = json_decode($request->getContent(), true);
 
+        $facture=new Facture();
+        $facture->setSubmissionDate(new \DateTime($data['expiry_date']));
+        
+        $facture->setUser($user);
+        
+        $facture->setCardNumber((int)$data['card_number']);
+        
+        $facture->setExpiryDate(new \DateTime('2025-01-01'));
+        $facture->setCvv((int)$data['cvv']);
+        $description=" ";
+        
+        
         // Calculate total of cart products
         foreach ($panier as $id => $quantity) {
             $product = $productsRepository->find($id);
+            
+
             if ($product) {
                 $total += $product->getPrice() * $quantity;
+
+                $description=$description . " " . $product->getName() . ":" . $quantity;
+                /*
+                $item=new Item();
+                $item->setFactureId($facture->getId());
+                $item->setQuantite($quantity);
+                $item->setProductId($product->getId());
+                $entityManager->persist($item);
+                */
             }
+            
         }
+        
+        $facture->setDescription($description);
+        $facture->setTotal((int)$total);
+        $entityManager->persist($facture);
+        $entityManager->flush();
+        
 
         // Simulate successful payment
         $session->remove('panier'); // Clear the cart after successful payment
