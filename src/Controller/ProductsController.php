@@ -7,9 +7,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+
 class ProductsController extends AbstractController
 {
-    #[Route('/product', name: 'user_products')]
+    #[Route('/products', name: 'user_products')]
     public function index(ProductsRepository $productsRepository): Response
     {
         $products = $productsRepository->findAll();
