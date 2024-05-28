@@ -9,7 +9,7 @@
         color: #f0f0f0;
         font-family: Arial, sans-serif;
         position: relative;
-        overflow: hidden;
+        overflow-y: auto; /* Enable vertical scrolling */
     }
     .container {
         position: relative;
@@ -118,6 +118,24 @@
         max-height: 400px; /* Adjust as needed */
         overflow-y: auto;
         margin-bottom: 20px;
+    }
+    /* Custom style for payment form */
+    #payment-form {
+        margin-top: 40px;
+        text-align: center;
+    }
+    #payment-form .form-group {
+        text-align: left;
+    }
+    #payment-form .form-group label {
+        display: block;
+        margin-bottom: 5px;
+    }
+    #payment-form .form-group input {
+        width: 100%;
+    }
+    #payment-form .btn-primary {
+        margin-top: 20px;
     }
 </style>
 {% endblock %}
