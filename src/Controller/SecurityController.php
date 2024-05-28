@@ -35,6 +35,11 @@ class SecurityController extends AbstractController
                 )
             );
 
+            if ($user->getUsername() === 'admin') {
+                $user->setRoles(['ROLE_ADMIN']);
+            } else {
+                $user->setRoles(['ROLE_USER']);
+            }
             $entityManager->persist($user);
             $entityManager->flush();
 
