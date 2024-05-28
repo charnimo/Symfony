@@ -44,7 +44,7 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('users', 'fa fa-user-circle-o' , Users::class)     ;  
        yield MenuItem::section('transaction info');
        yield MenuItem::linkToCrud('Factures', 'fas fa-file-invoice', Facture::class);
-      // yield MenuItem::linkToRoute('Total Earnings', 'fas fa-money-bill', 'admin_earnings');
+       yield MenuItem::linkToRoute('Total Earnings', 'fas fa-money-bill', 'admin_earnings');
 
     }
 }
