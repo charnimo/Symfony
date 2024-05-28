@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Controller;
 
 use App\Entity\Products;
@@ -91,7 +90,7 @@ class CartController extends AbstractController
     }
 
     #[Route('/checkout', name: 'cart_checkout', methods: ['POST'])]
-    public function checkout(Request $request, SessionInterface $session, ProductsRepository $productsRepository, EntityManagerInterface $em): JsonResponse
+    public function checkout(Request $request, SessionInterface $session, ProductsRepository $productsRepository): JsonResponse
     {
         $panier = $session->get('panier', []);
 
