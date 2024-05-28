@@ -7,6 +7,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
 class FactureCrudController extends AbstractCrudController
 {
@@ -26,7 +27,7 @@ class FactureCrudController extends AbstractCrudController
             IntegerField::new('cvv'),
             DateField::new('SubmissionDate'),
           
-            //TextField::new('description'),
+            TextField::new('description'),
         ];
     }
 }
