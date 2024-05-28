@@ -99,6 +99,8 @@ class CartController extends AbstractController
         }
 
         $total = 0;
+        
+        
 
         // Calculate total of cart products
         foreach ($panier as $id => $quantity) {
