@@ -1,9 +1,9 @@
 <?php
+
+
 namespace App\Entity;
 
 use App\Repository\UsersRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -28,18 +28,8 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255)]
     private ?string $password = null;
 
+    #[ORM\Column(type: 'json')]
     private array $roles = [];
-
-    /**
-     * @var Collection<int, Role>
-     */
-    #[ORM\ManyToMany(targetEntity: Role::class, inversedBy: 'users')]
-    private Collection $role;
-
-    public function __construct()
-    {
-        $this->role = new ArrayCollection();
-    }
 
     public function getId(): ?int
     {
@@ -54,7 +44,6 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     public function setUsername(string $username): static
     {
         $this->username = $username;
-
         return $this;
     }
 
@@ -66,7 +55,6 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     public function setEmail(string $email): static
     {
         $this->email = $email;
-
         return $this;
     }
 
@@ -78,7 +66,6 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPassword(string $password): static
     {
         $this->password = $password;
-
         return $this;
     }
 
@@ -98,38 +85,18 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
         // Ensure every user has at least ROLE_USER
         $roles = $this->roles;
         $roles[] = 'ROLE_USER';
-
         return array_unique($roles);
     }
+
     public function setRoles(array $roles): static
     {
-        $this->roles = $roles;
-
-        return $this;
-    }
-    // Other methods...
-
-    /**
-     * @return Collection<int, Role>
-     */
-    public function getRole(): Collection
-    {
-        return $this->role;
-    }
-
-    public function addRole(Role $role): static
-    {
-        if (!$this->role->contains($role)) {
-            $this->role->add($role);
+        // Ensure every user has at least one role
+        if (empty($roles)) {
+            // If no roles are provided, set a default role, e.g., ROLE_USER
+            $roles = ['ROLE_USER'];
         }
 
-        return $this;
-    }
-
-    public function removeRole(Role $role): static
-    {
-        $this->role->removeElement($role);
-
+        $this->roles = $roles;
         return $this;
     }
 }
