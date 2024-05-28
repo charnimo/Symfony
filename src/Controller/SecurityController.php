@@ -3,8 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\Users;
+use App\Form\RegistrationFormType;
 use App\Form\UsersType;
+use App\Security\UsersAuthenticator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -14,34 +17,50 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class SecurityController extends AbstractController
 {
-    #[Route('/signin', name: 'app_login')]
-    public function login(AuthenticationUtils $authenticationUtils, Request $request, EntityManagerInterface $em, UserPasswordHasherInterface $passwordHasher): Response
+    #[Route('/signin', name: 'app_register')]
+    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, Security $security, EntityManagerInterface $entityManager,AuthenticationUtils $authenticationUtils): Response
     {
-        // Create the registration form
         $user = new Users();
-        $registerForm = $this->createForm(UsersType::class, $user);
-        $registerForm->handleRequest($request);
+        $form = $this->createForm(RegistrationFormType::class, $user);
+        $form->handleRequest($request);
 
-        if ($registerForm->isSubmitted() && $registerForm->isValid()) {
-            $encodedPassword = $passwordHasher->hashPassword($user, $user->getPassword());
-            $user->setPassword($encodedPassword);
+        if ($form->isSubmitted() && $form->isValid()) {
+            // encode the plain password
+            $user->setPassword(
+                $userPasswordHasher->hashPassword(
+                    $user,
+                    $form->get('plainPassword')->getData()
+                )
+            );
+            echo"heyy";
 
-            $em->persist($user);
-            $em->flush();
+            $entityManager->persist($user);
+            $entityManager->flush();
 
-            return $this->redirectToRoute('app_login');
+            // do anything else you need here, like send an email
+            return $this->redirectToRoute('app_register');
+
+            //return $security->login($user, UsersAuthenticator::class, 'main');
         }
 
-        // Handle login form
+
         $error = $authenticationUtils->getLastAuthenticationError();
         $lastUsername = $authenticationUtils->getLastUsername();
 
         return $this->render('security/index.html.twig', [
+            'registrationForm' => $form->createView(),
             'last_username' => $lastUsername,
             'error' => $error,
-            'loginForm' => $registerForm->createView(), // Placeholder as Symfony's default login form is not handled by form builder
-            'registerForm' => $registerForm->createView(),
         ]);
+
+
+
+
+    }
+    #[Route(path: '/logout', name: 'app_logout')]
+    public function logout(): void
+    {
+        throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
     }
 }
 

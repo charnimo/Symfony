@@ -12,7 +12,9 @@
 
 <div class="container" id="container">
     <div class="form-container sign-up" id="sign-up-container">
-        {{ form_start(registerForm, {'attr': {'class': 'form'}}) }}
+
+
+        {{ form_start(registrationForm) }}
         <h1>Create Account</h1>
         <div class="social-icons">
             <a href="#" class="icon"><i class="fa-brands fa-google-plus-g"></i></a>
@@ -21,32 +23,49 @@
             <a href="#" class="icon"><i class="fa-brands fa-linkedin-in"></i></a>
         </div>
         <span>or use your email for registration</span>
-        {{ form_widget(registerForm.username, {'attr': {'placeholder': 'Username', 'class': 'form-control'}}) }}
-        {{ form_widget(registerForm.email, {'attr': {'placeholder': 'Email', 'class': 'form-control'}}) }}
-        {{ form_widget(registerForm.password, {'attr': {'placeholder': 'Password', 'class': 'form-control'}}) }}
+        {{ form_row(registrationForm.username) }}
+        {{ form_row(registrationForm.email) }}
+        {{ form_row(registrationForm.plainPassword, {
+            label: 'Password'
+        }) }}
         <button type="submit" class="btn btn-success">Sign Up</button>
-        {{ form_end(registerForm) }}
+        {{ form_end(registrationForm) }}
     </div>
-
     <div class="form-container sign-in" id="sign-in-container">
-        <form name="f2" action="{{ path('app_login') }}" method="POST">
-            <h1>Sign In</h1>
-            <div class="social-icons">
-                <a href="#" class="icon"><i class="fa-brands fa-google-plus-g"></i></a>
-                <a href="#" class="icon"><i class="fa-brands fa-facebook-f"></i></a>
-                <a href="#" class="icon"><i class="fa-brands fa-github"></i></a>
-                <a href="#" class="icon"><i class="fa-brands fa-linkedin-in"></i></a>
-            </div>
-            <span>or use your email for login</span>
-            <input type="text" name="_username" placeholder="Username" value="{{ last_username }}" required>
-            <input type="password" name="_password" placeholder="Password" required>
-            <a href="#">Forget Your Password?</a>
-            <button type="submit" class="btn btn-primary">Sign In</button>
+        <form method="post">
             {% if error %}
                 <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
             {% endif %}
+
+            {% if app.user %}
+                <div class="mb-3">
+                    You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
+                </div>
+            {% endif %}
+
+            <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+            <label for="inputUsername">Username</label>
+            <input type="text" value="{{ last_username }}" name="username" id="inputUsername" class="form-control" autocomplete="username" required autofocus>
+            <label for="inputPassword">Password</label>
+            <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
+
+            <input type="hidden" name="_csrf_token"
+                   value="{{ csrf_token('authenticate') }}"
+            >
+
+            <div class="checkbox mb-3">
+                <label>
+                    <input type="checkbox" name="_remember_me"> Remember me
+                </label>
+            </div>
+
+            <button class="btn btn-lg btn-primary" type="submit">
+                Sign in
+            </button>
         </form>
     </div>
+
+
 
     <div class="toggle-container">
         <div class="toggle">

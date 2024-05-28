@@ -1,60 +1,37 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    <link rel="stylesheet" href="{{ asset('styles/app2.css') }}">
-    <title>Login / Sign In</title>
-</head>
-<body>
-<div class="container" id="container">
-    <div class="form-container sign-in">
-        <form name="f2" action="{{ path('app_login') }}" method="POST">
-            <h1>Sign In</h1>
-            <div class="social-icons">
-                <a href="#" class="icon"><i class="fa-brands fa-google-plus-g"></i></a>
-                <a href="#" class="icon"><i class="fa-brands fa-facebook-f"></i></a>
-                <a href="#" class="icon"><i class="fa-brands fa-github"></i></a>
-                <a href="#" class="icon"><i class="fa-brands fa-linkedin-in"></i></a>
-            </div>
-            <span>or use your email password</span>
-            <input type="text" name="_username" placeholder="Username" value="{{ last_username }}" required>
-            <input type="password" name="_password" placeholder="Password" required>
-            <a href="#">Forget Your Password?</a>
-            <button type="submit" class="btn btn-primary">Sign In</button>
-            {% if error %}
-                <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-            {% endif %}
-        </form>
-    </div>
-    <div class="toggle-container">
-        <div class="toggle">
-            <div class="toggle-panel toggle-left">
-                <h1>Welcome Back!</h1>
-                <p>Enter your personal details to use all of site features</p>
-                <a href="{{ path('app_register') }}" class="btn hidden" id="register">Sign Up</a>
-            </div>
+{% extends 'base.html.twig' %}
+
+{% block title %}Log in!{% endblock %}
+
+{% block body %}
+<form method="post">
+    {% if error %}
+        <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+    {% endif %}
+
+    {% if app.user %}
+        <div class="mb-3">
+            You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
         </div>
+    {% endif %}
+
+    <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+    <label for="inputUsername">Username</label>
+    <input type="text" value="{{ last_username }}" name="username" id="inputUsername" class="form-control" autocomplete="username" required autofocus>
+    <label for="inputPassword">Password</label>
+    <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
+
+    <input type="hidden" name="_csrf_token"
+           value="{{ csrf_token('authenticate') }}"
+    >
+
+    <div class="checkbox mb-3">
+        <label>
+            <input type="checkbox" name="_remember_me"> Remember me
+        </label>
     </div>
-</div>
-<script src="{{ asset('js/login.js') }}"></script>
-<script>
-    const signUpButton = document.getElementById('register');
-    const signInButton = document.getElementById('login');
-    const container = document.getElementById('container');
 
-    if (signUpButton) {
-        signUpButton.addEventListener('click', () => {
-            container.classList.add("right-panel-active");
-        });
-    }
-
-    if (signInButton) {
-        signInButton.addEventListener('click', () => {
-            container.classList.remove("right-panel-active");
-        });
-    }
-</script>
-</body>
-</html>
+    <button class="btn btn-lg btn-primary" type="submit">
+        Sign in
+    </button>
+</form>
+{% endblock %}
