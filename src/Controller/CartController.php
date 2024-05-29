@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Security\Core\Security;
 
 #[Route('/cart')]
 class CartController extends AbstractController
@@ -35,7 +36,7 @@ class CartController extends AbstractController
     }
 
     #[Route('/add/{id}', name: 'cart_add')]
-    public function add(Products $product, SessionInterface $session)
+    public function add(Products $product, SessionInterface $session, Security $security)
     {
 
         if (!$security->isGranted('ROLE_USER')) {
