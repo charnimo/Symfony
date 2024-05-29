@@ -69,7 +69,7 @@ class SecurityController extends AbstractController
                     $rememberMeService->loginSuccess($request, $response, $token);
                 }
 
-                $this->addFlash('success', 'Welcome to Carya, Dear ' . $user->getUsername());
+                $this->addFlash('success', 'Welcome to Shop, mr ' . $user->getUsername());
                 return $this->redirectToRoute('app_home');
             } else {
                 // Handle invalid credentials
