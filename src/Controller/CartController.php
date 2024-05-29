@@ -9,7 +9,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\Security\Core\Security;
 
 #[Route('/cart')]
 class CartController extends AbstractController
@@ -36,14 +35,8 @@ class CartController extends AbstractController
     }
 
     #[Route('/add/{id}', name: 'cart_add')]
-    public function add(Products $product, SessionInterface $session, Security $security)
+    public function add(Products $product, SessionInterface $session)
     {
-
-        if (!$security->isGranted('ROLE_USER')) {
-            // Redirect the user to the sign-in page
-            return new RedirectResponse($this->generateUrl('/signin'));
-        }
-
         $id = $product->getId();
         $panier = $session->get('panier', []);
 
@@ -111,10 +104,11 @@ class CartController extends AbstractController
         foreach ($panier as $id => $quantity) {
             $product = $productsRepository->find($id);
             if ($product) {
+                
                 $total += $product->getPrice() * $quantity;
             }
         }
-        
+
         // Simulate successful payment
         $session->remove('panier'); // Clear the cart after successful payment
 

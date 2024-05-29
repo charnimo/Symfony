@@ -20,7 +20,7 @@ class UsersCrudController extends AbstractCrudController
     {
         return [
             IdField::new('id')->hideOnForm(),
-            TextField::new('email')->setFormTypeOption('disabled','disabled'),
+            TextField::new('email'),
             TextField::new('username'),
             TextField::new('password')->setFormTypeOption('disabled','disabled')
         ];
