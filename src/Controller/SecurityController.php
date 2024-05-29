@@ -35,11 +35,6 @@ class SecurityController extends AbstractController
                 )
             );
 
-            if ($user->getUsername() === 'admin') {
-                $user->setRoles(['ROLE_ADMIN']);
-            } else {
-                $user->setRoles(['ROLE_USER']);
-            }
             $entityManager->persist($user);
             $entityManager->flush();
 
@@ -73,6 +68,7 @@ class SecurityController extends AbstractController
                     $rememberMeService = $this->container->get('security.authentication.rememberme.services.persistent.remember_me');
                     $rememberMeService->loginSuccess($request, $response, $token);
                 }
+
                 $this->addFlash('success', 'Welcome to Carya, Dear ' . $user->getUsername());
                 return $this->redirectToRoute('app_home');
             } else {
