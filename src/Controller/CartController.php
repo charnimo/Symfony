@@ -37,6 +37,12 @@ class CartController extends AbstractController
     #[Route('/add/{id}', name: 'cart_add')]
     public function add(Products $product, SessionInterface $session)
     {
+
+        if (!$security->isGranted('ROLE_USER')) {
+            // Redirect the user to the sign-in page
+            return new RedirectResponse($this->generateUrl('/signin'));
+        }
+
         $id = $product->getId();
         $panier = $session->get('panier', []);
 
